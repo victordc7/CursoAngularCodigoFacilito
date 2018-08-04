@@ -1,0 +1,68 @@
+APUNTES DEL CURSO DE ANGULAR
+
+Para iniciar el proyecto devemos intalar nodeJS, TypeScript, Angular CLI
+Una vez instalado esos programas podemos crear un nuevo proyecto con el comando,
+
+    ng new nombreProyecto
+
+luego nos ubicamos en la carpeta del proyecto usando,
+
+    cd nombreProyecto
+
+e iniciamos el servidor con,
+
+    ng serve
+
+esto compila todo nuestro proyecto y actualiza los cambios en tiempo real.
+
+
+Angular es caracterisa por trabajar con componentes que son como widgets para seccionar el contenido de la pagina web, cada componente cuenta con su html,css,javaScript.
+
+Como dejimos anterior mente el componente cuenta con 3 archivos nombre.componet.html, nombre.component.ts y nombre.component.css
+Estos archivos suelen seguir estas extenciones en los nombres para saber que contenido hay detro de cada uno.
+En el archivo xxx.component.html se agrega la vista del componente (el codigo html).
+
+En el archivo xxx.component.ts se agrega la logica del componente (se usa lenguaje TypeScript).
+En esencia un componente es una clase que puede tener propiedades y metodos que nos sirvan para constuir el tamplate (archivo html) del componente.
+Las propiedades son como variables y se construyen de la siguiente forma, "alcance nombreVariable : tipoVariable = valor;" asignar un valor inicial es opcional.
+Ej: public name : string = 'Victor';
+    public edad : number;
+    public trueOrFalse : boolean = true;
+
+Los metodos son como funciones y se construyen de la siguiente forma, nombreMedtodo(parametros) : tipo de dato {logica}" los parametros son opcionales, dependeran de si son requeridos para la logica. El tipo de dato solo se agrega si este metodo retorna algun valor.
+Ej: getEdadNombre() : string {
+    return "${this.name} : ${this.edad}";
+}
+
+ngOnInit es un metodo de Angular el cual sirve para inicializar valores de propiedades, es recomendarlo usarlo en lugar del constructor y se usa de la siguiente manera.
+Ej:
+ngOnInit(){
+    this.name = 'Victor del Carpio';
+    this.edad = 24;    
+}
+Todo estos elementos van en el archivo xxx.component.ts.
+
+Por ultimo en el archivo xxx.component.css se agregan los estilos del componente (obviamente en lenguaje css). 
+Algo interesante de este archivo es que todas las reglas que aqui se encuentran solo tendran alcance al componente al cual pertenece por lo cual no afectaran a otros componentes.
+Angular cuenta con algunos selectores especiales como:
+    :host{    
+    } (actua sobre la etiqueta del componente, por lo cual afecta a todos los elementos dentro del componente)
+    :host-context(.otroSelector){        
+    }(actua sobre el padre o ancestro del componente)
+
+Para crear un componente usamos el comando,
+
+    ng g c nombreComponente
+
+este omando me crea automaticamente los 3 archivos menciondos anteriormente (nombre.componet.html, nombre.component.ts y nombre.component.css) ademas de importar el componente en el archivo app.module.ts para que el componente este listo para usar.
+
+    ng-content es una etiqueta utilizada en el archivo nombre1.component.html para mostrar las etiquetas o componentes hijos de nombres1 en el archivo app.component.html
+
+
+    La siguiente linea se puede utilizar para cambiar una propiedad despues de un tiempo especifico
+        setTimeout(()=> this.name = 'Victor', 3000) /* tiempo en milisegundos */
+        setTimeout(()=> this.trueOrFalse = false, 5000)
+    Estas sentencias se escriben dentro de ngOnInit en el archivo xxx.componet.ts
+
+    ngClass ver USage notes en el siguiente enlace
+    https://angular.io/api/common/NgClass
