@@ -25,4 +25,7 @@ export class EncabezadoComponent implements OnInit {
     ];
   }
 
+  cambioMasInfo(){
+    this.moreInformation = !this.moreInformation;
+  }
 }

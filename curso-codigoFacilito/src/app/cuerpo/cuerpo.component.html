@@ -1,0 +1,8 @@
+<div class="container">
+  <h1>Hola {{nombre}} {{apellido}} bienvenido a la pagina</h1>
+  <fieldset>
+    <legend>Cambiar nombre</legend>
+    <input type="text" id="nombre" (change)= "cambioNombre($event)">
+    <input type="text" [(ngModel)]="apellido">
+  </fieldset>
+</div>

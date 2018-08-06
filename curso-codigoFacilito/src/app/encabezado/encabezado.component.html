@@ -1,7 +1,7 @@
 
 <div class="full-screen">
     <h1>{{titulo}}</h1>
-    <a (click)="moreInformation=!moreInformation">Mas Informacion <i [ngClass]="{'fa':true, 'fa-chevron-circle-down': !moreInformation, 'fa-chevron-circle-up': moreInformation}"></i></a>
+    <a (click)="cambioMasInfo()">Mas Informacion <i [ngClass]="{'fa':true, 'fa-chevron-circle-down': !moreInformation, 'fa-chevron-circle-up': moreInformation}"></i></a>
     <p class="info" *ngIf="moreInformation">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum dicta ullam officia optio consectetur similique itaque, dignissimos amet nulla illo quibusdam, exercitationem nisi earum ex rerum qui. Perspiciatis, alias ipsa!</p>
 
 

@@ -86,8 +86,46 @@ Para instalar FONT-AWESOME debemos usar el comando "npm install font-awesome" y 
 *NGFOR
 *ngFor se utiliza para la creacion de tablas o listas donde se repiten varios elementos iguales como <li> o <tr>
     <ul >
-        <li  *ngFor="let item of array">
-            {{item}}
+        <li  *ngFor="let item of array; index as i">
+            {{i}}{{item}}
         </li>
     </ul>
-array es un arreglo que se define en el component.ts de esta forma item va tomando un valor de ese array en cada iteracion.
+array es un arreglo que se define en el xxx.component.ts de esta forma item va tomando un valor de ese array en cada iteracion.
+
+*NGSWITCH
+*ngSwitch se usa para mostrar un solo bloque de varios casos, es equivalente a usar varios ngIf
+    <div [ngSwitch]="category">
+        <p *ngSwitchCase="'web'"> Opcion web</p>
+        <p *ngSwitchCase="'movil'"> Opcion movil</p>
+        <p *ngSwitchCase="'otra'"> Opcion otra</p>
+        <p *ngSwitchDefault> Opcion no especificada</p>
+    </div>
+dependiendo del valor de la variable category se mostrara uno solo de los parrafos, si es web, movil, otra se mostrara el parrafo conrespondiente, en caso de que category no tenga valor o tenga otro valor se mostrara la opcion default 
+
+EVENTOS
+Click
+Es el evento mas comun el cual define una accion cuando se hace click en el elemento donde se puso el evento,
+    <a (click)="moreInformation=!moreInformation">Mas Informacion</a>
+tambien se puede pasar un metodo el cual se crearia en el archivo xxx.component.ts por ejemplo,
+    cambioMasInfo(){
+        this.moreInformation = !this.moreInformation;
+    }
+y el elemento quedaria asi,
+    <a (click)="cambioMasInfo()">Mas Informacion</a>
+Change
+Detecta cualquier cambio en un campo de un formulario
+    <input type="text" (change)="nombre = $event.target.value">
+tambien se le puede mandar un metodo,
+    <input type="text" (change)= "cambioNombre($event)">
+    cambioNombre(event : any){
+        this.nombre = event.target.value;
+    }
+La variable $event ya viene definida lista para usar
+
+
+ngModel
+Sirve para sincronizar a 2 vias, se pone en un input con el nombre de la propiedad que quieres sincronizar
+    <input type="text" [(ngModel)]="apellido">
+
+PIPES
+Sirven para cambiar el formato de siertos valores como fechas o monedas, el operado del pipe es el simbolo | 
