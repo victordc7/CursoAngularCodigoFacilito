@@ -1,5 +1,22 @@
 
 <div>
     <h1>{{titulo}}</h1>
+    <a (click)="moreInformation=!moreInformation">Mas Informacion <i [ngClass]="{'fa':true, 'fa-chevron-circle-down': !moreInformation, 'fa-chevron-circle-up': moreInformation}"></i></a>
+    <p class="info" *ngIf="moreInformation">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum dicta ullam officia optio consectetur similique itaque, dignissimos amet nulla illo quibusdam, exercitationem nisi earum ex rerum qui. Perspiciatis, alias ipsa!</p>
+
+
     <button class='btn' (click)="trueOrFalse=!trueOrFalse" [ngClass]="{'btn-verde': trueOrFalse , 'btn-azul': !trueOrFalse}">Cambio de color</button>
+    <p class="color" *ngIf="trueOrFalse; else loquesea">Verde</p>
+        <ng-template #loquesea>
+            <p class="color">Azul</p>
+        </ng-template>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <ul class="navbar-nav">
+            <li class="navbar-nav"><a class="nav-link" href="#"><i class="fa fa-home"></i>          Home</a></li>
+            <li class="nav-item" *ngFor="let item of navList">
+                <a class="nav-link" href="#">{{item}}</a>
+            </li>
+        </ul>
+    </nav>
 </div>
