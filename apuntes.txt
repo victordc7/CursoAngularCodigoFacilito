@@ -75,8 +75,19 @@ https://angular.io/api/common/NgClass
 La prueba logica se puede remplazar por las palabras true or false o por una variable boolean.
 Ej 1:<p *ngIf="prueba logica">Esto se mostrara si se cumple la prueba logica</>
 
-Ej 2:<p *ngIf="prueba logica; else loquesea">Esto se mostrara si se cumple la prueba logica</>
+Ej 2:<p *ngIf="prueba logica; else loquesea">Esto se mostrara si se cumple la prueba logica</p>
     <ng-template #loquesea>
         <p>Esto se mostrara si NO se cumple la prueba logica</p>
     </ng-template>
 En el segundo ejemplo podemos ver el uso del else y como debemos usar <ng-template> para que funcione.
+
+Para instalar FONT-AWESOME debemos usar el comando "npm install font-awesome" y agregar en el archivo "angular.json" dentro del array styles la siguiente ruta ../node_module/font-awesome/css/font-awesome.css (de igual forma podemos instalar bootstrap usando npm install bootstrap)
+
+*NGFOR
+*ngFor se utiliza para la creacion de tablas o listas donde se repiten varios elementos iguales como <li> o <tr>
+    <ul >
+        <li  *ngFor="let item of array">
+            {{item}}
+        </li>
+    </ul>
+array es un arreglo que se define en el component.ts de esta forma item va tomando un valor de ese array en cada iteracion.
