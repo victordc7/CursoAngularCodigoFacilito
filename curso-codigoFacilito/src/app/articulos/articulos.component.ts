@@ -10,7 +10,7 @@ import { ArticulosService } from '../articulos.service';
 
 export class ArticulosComponent implements OnInit {
 
-  constructor(private articulosS : ArticulosService) { }
+  constructor(public articulosS : ArticulosService) { }
 
   ngOnInit() {
     this.articulosS.getAll();

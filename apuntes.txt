@@ -187,11 +187,9 @@ uno de los mas comunes es map en el siguiente ejemplo lo usaremos para modificar
         observable.pipe(map(data => {return data[0]})).subscribe(data => {console.log(data)})
 
     El o los operadores debe ir dentro de la funcion pipe() que tambien es un metodo de rxjs. en el ejemplo anterior nos muestra solo el primer articulo (el que esta en la posicion 0 del array), si queremos que nos muestre todos podriamos hacer.
-        public x : string[];
         getAll(){
-            observable.pipe(map(data => {return data.map( r => this.x =[r.id,r.name])})).subscribe(data => {console.log(data)})
+            observable.pipe(map(data => {return data})).subscribe(data => {console.log(data)})
         }
-    observacion: el .map que esta en return data.map no es un operador de rxjs, sino de javaScript que sirve para iterar todos los valores del arreglo
 
 
 ASYNC PIPE "| async"
@@ -205,3 +203,12 @@ Al intentar acceder a los metodos o propiedades de un objeto con valor nulo nos 
 Es muy usado en programacion asincrona ya que por lo general empieza con valor nulo y despues se actualiza el valor.
 Ej:
     <li *ngFor="let repo of articulosS.repoObserver | async">{{repo?.name}}</li>
+
+
+ANIMATIONS
+Para usar animaciones debemos importar BrowserAnimationsModule from @angular/platform-browser/animations ya gregar la clase a los imports en el archivo app.module.ts tambien debemos revisar que en el archivo package.json tengamos en dependencies @angular/animations : version, de no ser asi usamos en la terminal npm intall @angular/animations.
+
+
+BUILD DE PRODUCCION
+Una vez la aplicacion este lista ejecutamos el comando
+    ng build --prod
