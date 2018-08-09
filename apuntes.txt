@@ -127,5 +127,81 @@ ngModel
 Sirve para sincronizar a 2 vias, se pone en un input con el nombre de la propiedad que quieres sincronizar
     <input type="text" [(ngModel)]="apellido">
 
+
 PIPES
-Sirven para cambiar el formato de siertos valores como fechas o monedas, el operado del pipe es el simbolo | 
+Sirven para cambiar el formato de ciertos valores como fechas o monedas, el operado del pipe es el simbolo | 
+Ver https://angular.io/guide/pipes.
+
+
+DIRECTIVES
+Sirven para cambiar el DOM de los elementos, principalmente stylos o clases. 
+Ver https://angular.io/guide/attribute-directives.
+
+
+HOSTLISTENER
+Sirven para aplicar los directives cuando ocurre un evento (click, mouseover, mouseout... ver el dom de js para mas eventos).
+
+
+SERVICE
+Sirven para hacer consultas y almacenar informacion ya que los componentes no deben hacer esto, otra caracteristica importante es que cada servicio tiene un solo objeto por lo cual si algun componente modifica este objeto todos los demas componentes que usen el servicio veran al objeto modificado. De ese modo los servicios permiten comunicacion entre los componentes.
+Para crear un servicio usamos el comando
+    ng g s nombreServicio
+nos creara 2 archivos, nombreServicio.service.ts y nombreServicio.service.spec.ts, este ultimo lo podemos eliminar.
+/* Apartir de angular 6 ya no es necesario hacer esto => Luego debemos importar la clase al archivo app.module.ts y agregarla a los providers en el mismo archivo. */
+Finalmente para utilizarla debemos importar el servicio al componente donde lo vayamos a usar y creamos una variable con esa clase dentro del constructor del componente quedaria algo como esto
+    constructor(private nombrevariableS : ArticulosService){
+
+    }
+
+Una de las funciones mas comunes de un servicio es realizar consultas http es decir en internet, para eso debemos importar HttpClientModule de @angular/common/http y agregarlo a los imports en el archivo app.module.ts. Tambien debemos importar HttpClient al servicio que hara la consulta a internet.
+Luego en el constructor del servicio crearemos una variable de esta clase HttpClient de la siguiente manera.
+    constructor(private httpVAR : HttpClient){
+
+    }
+Ahora podemos seguirconfigurando el servicio, por ejemplo podemos agregar un metodo getAll() que obtenga de internet todos los articulos.
+    getAll(){
+        this.httpVAR.get('').subscribe(data => {console.log(data);})
+    }
+el metodo get('url') obtiene informacion de dicha url y es un metodo de la clase HttpClient,  este metodo get retorna un observador (aun no hemos trabajado con observadores pero de momento para ver la informacion lo haremos con el .subscribe...)
+Este servicio articulos lo usaremos en el componente articulos.
+
+
+OBSERVADORES Y OBSERVABLES
+Los observables son datos que se reciben por el o los observadores cada vez que este observable se actualice o recargue el observador recibira la neva informacion y se volvera a ejecutar.
+Por lo general los observables los obtendremos de una fuente como una base de datos o http tambien los podemos crear pero es algo poco comun.
+La parte importante de este tema es los observadores que deben subscribirse a los observables para asi reaccionar a ellos, esto se hace mediante el metodo subscribe().
+    observable.subscribe((data) => {
+
+    })
+"data" es la informacion que envia el observable, y entre las llaves va lo que hara el observador cada vez que reciba data.
+
+
+OPERADORES RXJS
+Son operadores que se aplican a los observables para modificarlos, se pueden ver la lista de operadores en http://reactivex.io/documentation/operators.html.
+uno de los mas comunes es map en el siguiente ejemplo lo usaremos para modificar un arreglo
+    para usar cualquier operador debemos importarlo en el servicio para ello usamos la siguiente linea
+        import { nombreOperador } 'rxjs/operators';
+    por lo cual el ejemplo de map queadria asi
+        import { map } from 'rxjs/operators';
+
+        observable.pipe(map(data => {return data[0]})).subscribe(data => {console.log(data)})
+
+    El o los operadores debe ir dentro de la funcion pipe() que tambien es un metodo de rxjs. en el ejemplo anterior nos muestra solo el primer articulo (el que esta en la posicion 0 del array), si queremos que nos muestre todos podriamos hacer.
+        public x : string[];
+        getAll(){
+            observable.pipe(map(data => {return data.map( r => this.x =[r.id,r.name])})).subscribe(data => {console.log(data)})
+        }
+    observacion: el .map que esta en return data.map no es un operador de rxjs, sino de javaScript que sirve para iterar todos los valores del arreglo
+
+
+ASYNC PIPE "| async"
+Sirve para mostrar informacion asincrona, ya sea de un observable o de una promesa, lo que hace es suscribirse a ese observable o promesa y mostrar el ultimo valor enviado.
+una forma de utilizarlo es con los ciclos ngFor de la siguiente manera.
+    <li *ngFor="let repo of articulosS.repoObserver | async">{{repo.name}}</li>
+
+
+OPERADOR DE NAVEGACION SEGURA "?"
+Al intentar acceder a los metodos o propiedades de un objeto con valor nulo nos da un error y puede hacer fallar nuestra pagina web, con el operador ? se valida que el objeto a la izquierda no sea nulo antes de acceder a la propiedad o el metodo deseado.
+Es muy usado en programacion asincrona ya que por lo general empieza con valor nulo y despues se actualiza el valor.
+Ej:
+    <li *ngFor="let repo of articulosS.repoObserver | async">{{repo?.name}}</li>
