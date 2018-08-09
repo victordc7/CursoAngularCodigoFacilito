@@ -212,3 +212,5 @@ Para usar animaciones debemos importar BrowserAnimationsModule from @angular/pla
 BUILD DE PRODUCCION
 Una vez la aplicacion este lista ejecutamos el comando
     ng build --prod
+esto nos mostrara si tenemos algun error en la aplicacion, el cual deberemos corregir antes de continuar, una vez el comando no nos de ningun error se creara una carpeta dist en la cual tiene el contenido que subiremos al host.
+otra cosa importantes es que las imagenes que se utilisen debe estar en la carpera assets que esta dentro de la carpeta src ya que esta carpeta se copiara en el dist cuando se haga el build.
