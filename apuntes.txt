@@ -54,7 +54,7 @@ Para crear un componente usamos el comando,
 
     ng g c nombreComponente
 
-este omando me crea automaticamente los 3 archivos menciondos anteriormente (nombre.componet.html, nombre.component.ts y nombre.component.css) ademas de importar el componente en el archivo app.module.ts para que el componente este listo para usar.
+este comando me crea automaticamente los 3 archivos mencionados anteriormente (nombre.componet.html, nombre.component.ts y nombre.component.css) ademas de importar el componente en el archivo app.module.ts para que el componente este listo para usar.
 
 
 NG-CONTENT
@@ -213,4 +213,32 @@ BUILD DE PRODUCCION
 Una vez la aplicacion este lista ejecutamos el comando
     ng build --prod
 esto nos mostrara si tenemos algun error en la aplicacion, el cual deberemos corregir antes de continuar, una vez el comando no nos de ningun error se creara una carpeta dist en la cual tiene el contenido que subiremos al host.
-otra cosa importantes es que las imagenes que se utilisen debe estar en la carpera assets que esta dentro de la carpeta src ya que esta carpeta se copiara en el dist cuando se haga el build.
+otra cosa importantes es que las imagenes que se utilisen debe estar en la carpera assets que esta dentro de la carpeta src ya que esta carpeta se copiara en el dist cuando se haga el build. 
+
+
+
+
+
+ROUTES
+Importamos en app.module.ts RouterModule y Routes
+    import { RouterModule, Routes } from '@angular/router';
+Luego creamos una constante entre las importaciones y @NgModule con el siguiente codigo
+    const routes: Routes = [
+        { path: 'contacto', component: ContactoComponent }
+    ];
+path es el nombre de la ruta y component el componente que se utilizara en esa ruta.
+tambien es recomendable agregar un documento con path vacio que use un componente por defecto, por ejemplo
+        { path: '', component: BodyComponent , pathMatch: 'full' },
+otra documento recomendable es el comodin que redirecciona cualquier ruta no existente a una ruta de inicio o de error
+    const routes: Routes = [
+        { path: '', component: BodyComponent , pathMatch: 'full' },
+        { path: 'contacto', component: ContactoComponent }
+        { path: '**' , redirectTo: '/' , pathMatch: 'full'}
+    ];
+Agregamos la siguiente linea dentro de los imports
+    RouterModule.forRoot(routes)
+ahora en el archivo app.component.html ponemos la etiqueta
+    <router-outlet></router-outlet>
+donde queramos que vaye el contenido dinamico (que cambia entre una ruta y otra), por lo general entre el header y el footer.
+Por ultimo debemos configurar el navbar para que nos lleve a estas rutas, pero NO debemos usar href ya que esto recargaria la pagina, en su lugar usamos
+    routerLink="/rutaPath"
