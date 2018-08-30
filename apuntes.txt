@@ -158,7 +158,7 @@ Luego en el constructor del servicio crearemos una variable de esta clase HttpCl
     constructor(private httpVAR : HttpClient){
 
     }
-Ahora podemos seguirconfigurando el servicio, por ejemplo podemos agregar un metodo getAll() que obtenga de internet todos los articulos.
+Ahora podemos seguir configurando el servicio, por ejemplo podemos agregar un metodo getAll() que obtenga de internet todos los articulos.
     getAll(){
         this.httpVAR.get('').subscribe(data => {console.log(data);})
     }
@@ -242,3 +242,35 @@ ahora en el archivo app.component.html ponemos la etiqueta
 donde queramos que vaye el contenido dinamico (que cambia entre una ruta y otra), por lo general entre el header y el footer.
 Por ultimo debemos configurar el navbar para que nos lleve a estas rutas, pero NO debemos usar href ya que esto recargaria la pagina, en su lugar usamos
     routerLink="/rutaPath"
+
+
+
+
+
+
+Inputs Outputs EventEmitter
+Se utilizan para comunicar (pasar informacion) entre un componente padre y su hijo en cualquiera de los 2 sentidos.
+
+para que el padre le pase informacion al hijo se usa el decorador @Input() en el component.ts del componente hijo, para ello debemos importar Input de @angular/core y al declarar la variable(propiedad) se coloca el decorador por delante (no se le asigna ningun valor ya que el valor se lo dara el componente padre)
+    @Input() nombreVariable;
+luego en el html del componente padre se le asigna un valor a esa valiable dentro de la etiqueta del componente hijo
+    <app-hijo [nombreVariable]='valorVariable' ></app-hijo>
+valorVariable es una variable del componente padre.
+
+para que el hijo le pase informacion al padre se usa el decorador @Output() en el component.ts del componente hijo, para ello debemos importar Output de @angular/core y al declarar la variable(propiedad) se coloca el decorador por delante esta variable sera de tipo EventEmitter
+    @Output() nombreEvento: EventEmitter<any> = new EventEmitter();
+entre <> va el tipo de variable que le enviara al padre, puede ser un objeto EventEmitter<{ name: string, age: number}> o incluso una clase creada en un modelo.
+ahora en el html del hijo debemos llamar un metodo al realizar un evento por ejemplo (click)
+    <button (click)="lanzar(valorVariable)">Lanzar alert</button>
+luego en el component.ts creamos este metodo el cual le dara su valor a nombreEvento a traves del metodo emit()
+    lanzar( parametro ) {
+        this.nombreEvento.emit({ name: parametro.name, age: parametro.age});
+    }
+notese que para asignar los valores se usa : y no =. Si parametro es del mismo tipo que lo que esta dentro del <> se puede pasar el parametro completo
+    lanzar( parametro ) {
+        this.nombreEvento.emit(parametro);
+    }
+por ultimo en el html del componente padre se usa el evento creado que llama a otro metodo el cual usara la informacion dada del elemento hijo 
+    <app-hijo (nombreEvento)="metodoPadre($event)"></app-recipe-list>
+$event es una variable reservada que contiene la informacion del evento (nombreEvento) que se le asigno por medio del metodo emit(), otra forma de usar este evento es asignar el valor de $event directamente a una variable del componente padre 
+    <app-hijo (nombreEvento)="variablePadre = $event"></app-recipe-list>
