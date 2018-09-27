@@ -149,13 +149,13 @@ Para crear un servicio usamos el comando
 nos creara 2 archivos, nombreServicio.service.ts y nombreServicio.service.spec.ts, este ultimo lo podemos eliminar.
 /* Apartir de angular 6 ya no es necesario hacer esto => Luego debemos importar la clase al archivo app.module.ts y agregarla a los providers en el mismo archivo. */
 Finalmente para utilizarla debemos importar el servicio al componente donde lo vayamos a usar y creamos una variable con esa clase dentro del constructor del componente quedaria algo como esto
-    constructor(private nombrevariableS : ArticulosService){
+    constructor(private nombrevariableS: ArticulosService){
 
     }
 
 Una de las funciones mas comunes de un servicio es realizar consultas http es decir en internet, para eso debemos importar HttpClientModule de @angular/common/http y agregarlo a los imports en el archivo app.module.ts. Tambien debemos importar HttpClient al servicio que hara la consulta a internet.
 Luego en el constructor del servicio crearemos una variable de esta clase HttpClient de la siguiente manera.
-    constructor(private httpVAR : HttpClient){
+    constructor(private httpVAR: HttpClient){
 
     }
 Ahora podemos seguir configurando el servicio, por ejemplo podemos agregar un metodo getAll() que obtenga de internet todos los articulos.
@@ -232,7 +232,7 @@ tambien es recomendable agregar un documento con path vacio que use un component
 otra documento recomendable es el comodin que redirecciona cualquier ruta no existente a una ruta de inicio o de error
     const routes: Routes = [
         { path: '', component: BodyComponent , pathMatch: 'full' },
-        { path: 'contacto', component: ContactoComponent }
+        { path: 'contacto', component: ContactoComponent },
         { path: '**' , redirectTo: '/' , pathMatch: 'full'}
     ];
 Agregamos la siguiente linea dentro de los imports
@@ -271,6 +271,56 @@ notese que para asignar los valores se usa : y no =. Si parametro es del mismo t
         this.nombreEvento.emit(parametro);
     }
 por ultimo en el html del componente padre se usa el evento creado que llama a otro metodo el cual usara la informacion dada del elemento hijo 
-    <app-hijo (nombreEvento)="metodoPadre($event)"></app-recipe-list>
+    <app-hijo (nombreEvento)="metodoPadre($event)"></app-hijo>
 $event es una variable reservada que contiene la informacion del evento (nombreEvento) que se le asigno por medio del metodo emit(), otra forma de usar este evento es asignar el valor de $event directamente a una variable del componente padre 
-    <app-hijo (nombreEvento)="variablePadre = $event"></app-recipe-list>
+    <app-hijo (nombreEvento)="variablePadre = $event"></app-hijo>
+
+
+
+FORMs
+los formularios en angular no envian y reciben data directamente del servidor. por lo cual no tienen method="put" ni post ni nada. angular a traves de ngModel almacena la informacion del formulario en un objeto de javaScript para poderlo usar facilmente en nuestra applicacion. para usarlo basta incluir ngModel dentro de la etiqueta del input, selector, etc (aquel campo el cual querramo recibir la informacion) y agregarle un name="cualquierNombre" el cual sera el nombre del valor enviado en nuestro objeto. Tambien debemos importar FormsModule de @angular/forms en app.module.ts
+    <form>
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" class="form-control" ngModel name="name1">
+    </form>
+ahora para enviar el formulario incluimos en la etiqueta form un evento, ngSubmit, el cual ejecuta un metodo que recibe un parametro, el metodo lo crearemos nosotros para hacer uso de la data que envia el formulario, el parametro que se envia al metodo tambien debe agregarse dentro de la etiqueta de la siguiente forma #f="ngForm"
+    <form (ngSubmit)="onSubmit(g) #g="ngForm">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" class="form-control" ngModel name="name1">
+    </form>
+en el ejemplpo "g" es el objeto que contiene toda la informacion del formulario (si ha sido modificado, si tiene validacion, los valores de los campos rellenados, etc) entre esa informacion de "g" nos interesa value el cual es un objeto que contiene los nombres de los campos que asignamos con name="" y su valor.
+en nuestro archivo component.ts debemos importar NgFrom de @angular/forms y crear nuestro metodo de la siguiente forma
+    onSubmit(form: NgForm) {
+        console.log(form.value.name1) //muestra el valor escrito en el input con el name = name1
+    }
+validacion
+https://angular.io/api/forms/Validators
+al boton de submit se le puede agregar una propiedad para que este disable hasta que todos los campos sean validos
+    <button class="btn btn-primary" type="submit" [disable]="!g.valid">Enviar</button>
+recordemos que "g" es la letra q le asignamos al formulario y contiene todas las propiedades del mismo en este caso estamos usando valid que tiene como valor true or false dependiendo si todos los campos son validos o hay alguno invalido.
+    <form (ngSubmit)="onSubmit(g)" #g="ngForm">
+    <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" class="form-control" ngModel name="name1" required #name1="ngModel">
+        <small class="form-text text-muted" *ngIf="!name1.valid && name1.touched"> Porfavor ingresa un nombre </small>
+    </div>
+        <button class="btn btn-success" type="submit" [disabled]="!g.valid">Enviar</button>
+    </form>
+
+angular agrega clases a los campos del formulario dependiendo de los valores que tenga las propiedades como valid/invalid, touched/untouched, dirty, etc para ver las clases que tiene un un elemento del formulario basta con darle inspeccionar desde el navegador. tambien se ve como la clase se modifica al interactuar con el elemento.
+a continuacion algunas de las clases que se utilizan para cambiar la vista del formulario dandole informacion al usuario.
+    input.ng-invalid.ng-touched, select.ng-invalid.ng-touched{
+        border-left: solid 5px red;
+        box-shadow: none;
+    }
+    input.ng-valid.ng-touched, select.ng-valid.ng-touched{
+        border-left: solid 5px green;
+        box-shadow: none;
+    }
+    .form-control:focus {
+        color: black;
+        background-color: #fff;
+        border-color: #779d34;
+        outline: 0;
+        box-shadow: none;
+    }
